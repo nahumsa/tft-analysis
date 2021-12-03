@@ -1,0 +1,6 @@
+*-env/
+__pycache__/
+.env
+.coverage
+.nox/
+.pytest_cache/
