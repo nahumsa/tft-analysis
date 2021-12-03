@@ -17,4 +17,4 @@ def black_check(session):
     """ Install black and test if the linting is correct.
     """
     session.install("black")
-    session.run("black", "--check", "--diff", "tests", "tsim")
+    session.run("black", "--check", "--diff", "tests", "scrape")
