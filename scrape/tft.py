@@ -42,4 +42,5 @@ class TFTScraper:
     def get_gm_summoner_name_list(self) -> List[str]:
         gm_url = f"https://br1.api.riotgames.com/tft/league/v1/challenger"
         payload = get_payload(self._send_request(gm_url))
+
         return [entries_dict["summonerName"] for entries_dict in payload.entries]
