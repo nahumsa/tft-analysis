@@ -29,9 +29,9 @@ class TFTScraper:
         response = self._send_request(match_url, count=count)
         return json.loads(response.text)
 
-    def get_match_history_summoner_name(self, name: str) -> List[dict]:
+    def get_match_history_summoner_name(self, name: str, count: int = None) -> List[dict]:
         payload = self.from_summoner_name(name)
-        return self.get_match_history_puuid(payload.puuid)
+        return self.get_match_history_puuid(payload.puuid, count)
 
     def get_match_details_from_id(self, id: str) -> Payload:
         match_details_url = (
