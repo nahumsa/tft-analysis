@@ -4,32 +4,12 @@ import pandas as pd
 
 from dotenv import dotenv_values
 from typing import List, Any, Dict
+
 from scrape.tft import TFTScraper
+from version_five import *
 
 CONFIG = dotenv_values(".env")
 API_KEY = CONFIG["KEY"]
-
-# Find a better way to keep thos columns
-COLUMNS = ["match_id", "data_version", "level", "placement", "puuid"]
-
-NAME_TRAITS = [
-    "Arcanist",
-    "Assassin",
-    "Bodyguard",
-    "Bruiser",
-    "Challenger",
-    "Colossus",
-    "Enchanter",
-    "Innovator",
-    "Protector",
-    "Scholar",
-    "Sniper",
-    "Transformer",
-    "Twinshot",
-]
-
-NAME_UNITS = [f"unit_{i}" for i in range(9)]
-TIER_UNITS = [f"tier_unit_{i}" for i in range(9)]
 
 
 def get_all_columns() -> List[str]:
