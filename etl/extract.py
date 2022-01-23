@@ -6,7 +6,7 @@ from dotenv import dotenv_values
 from typing import List, Any, Dict
 
 from scrape.tft import TFTScraper
-from version_five import *
+from etl.version_five import *
 
 CONFIG = dotenv_values(".env")
 API_KEY = CONFIG["KEY"]
