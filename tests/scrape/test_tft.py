@@ -1,7 +1,4 @@
-import json
 import responses
-import requests
-import pytest
 
 from scrape.tft import TFTScraper
 
