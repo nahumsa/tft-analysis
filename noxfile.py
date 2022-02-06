@@ -8,7 +8,7 @@ def tests_coverage(session):
     session.install("-r", "requirements.txt")
     session.install("pytest")
     session.install("coverage")
-    session.run("coverage", "run",  "-m",  "--omit=.nox/*", "pytest")
+    session.run("coverage", "run",  "-m",  "--omit=.nox/*", "--omit=tests/*", "pytest")
     session.run("coverage", "report", "--fail-under=85", "--show-missing")
     session.run("coverage", "erase")
 
