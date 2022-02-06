@@ -1,18 +1,21 @@
-from dataclasses import dataclass, field
-from importlib.metadata import metadata
 import pandas as pd
 
 from dotenv import dotenv_values
 from typing import List, Any, Dict
 
 from scrape.tft import TFTScraper
-from etl.version.five import COLUMNS, NAME_TRAITS, NAME_UNITS, TIER_UNITS
+from etl.version.v5 import COLUMNS, NAME_TRAITS, NAME_UNITS, TIER_UNITS
 
 CONFIG = dotenv_values(".env")
 API_KEY = CONFIG["KEY"]
 
 
 def get_all_columns() -> List[str]:
+    """Get all columns for a given version of the game.
+
+    Returns:
+        List[str]: All columns.
+    """
     columns = COLUMNS.copy()
     columns.extend(NAME_TRAITS)
     columns.extend(NAME_UNITS)
@@ -21,15 +24,25 @@ def get_all_columns() -> List[str]:
 
 
 def generate_blank_df() -> pd.DataFrame:
+    """Generate a blank DataFrame with all columns.
+
+    Returns:
+        pd.DataFrame: Blank DataFrame with named columns.
+    """
     columns = get_all_columns()
 
     return pd.DataFrame(columns=columns)
 
 
-from typing import List, Any, Dict
-
-
 def get_traits(list_traits: List[dict]) -> dict:
+    """Extract traits from list of traits.
+
+    Args:
+        list_traits (List[dict]): list with all traits encoded in a dict.
+
+    Returns:
+        dict: dictionary with all traits
+    """
     trait = {}
 
     for dic in list_traits:
@@ -40,6 +53,14 @@ def get_traits(list_traits: List[dict]) -> dict:
 
 
 def get_units(list_units: List[dict]) -> dict:
+    """Extract traits from lists of units.
+
+    Args:
+        list_units (List[dict]): list with all units encoded in a dict.
+
+    Returns:
+        dict: dictionary with all units
+    """
     units = {}
 
     for dic in list_units:
@@ -50,7 +71,14 @@ def get_units(list_units: List[dict]) -> dict:
 
 
 def get_participant_data(participant: Dict[Any, Any]) -> Dict[Any, Any]:
+    """Extract participant data from the participant dict.
 
+    Args:
+        participant (Dict[Any, Any]): dict of participants.
+
+    Returns:
+        Dict[Any, Any]: dictionary with all participant data.
+    """
     participant_dict = {}
     participant_dict["level"] = participant["level"]
     participant_dict["placement"] = participant["placement"]
@@ -60,7 +88,17 @@ def get_participant_data(participant: Dict[Any, Any]) -> Dict[Any, Any]:
 
 
 def get_metadata_details(match_details: Dict[Any, Any]) -> Dict[Any, Any]:
+    """Extract metadata from the match_details.
 
+    Args:
+        match_details (Dict[Any, Any]): dict with all match details.
+
+    Raises:
+        ValueError: when there is no metadata.
+
+    Returns:
+        Dict[Any, Any]: dictionary with match details
+    """
     try:
         match_dict = match_details.metadata
 
@@ -74,7 +112,14 @@ def get_metadata_details(match_details: Dict[Any, Any]) -> Dict[Any, Any]:
 
 
 def get_participant_units(participant: Dict[Any, Any]) -> Dict[Any, Any]:
+    """Extract participant units.
 
+    Args:
+        participant (Dict[Any, Any]): [description]
+
+    Returns:
+        Dict[Any, Any]: [description]
+    """
     participant_units = {}
     participant_units["traits"] = get_traits(participant["traits"])
     participant_units["units"] = get_units(participant["units"])
@@ -93,17 +138,18 @@ def data_from_summoner_name(name: str, count: int = None) -> pd.DataFrame:
 
         columns = df.columns
 
+        # Normalize the database and do joins
         for player in match_details.info["participants"]:
 
             aux_df = pd.DataFrame(columns=columns, index=[0])
-
+                        
             # Participant has the overall data for the player
             participant = get_participant_data(player)
             participant.update(data_details)
-
+            
             for key, values in participant.items():
                 aux_df.loc[0, key] = values
-
+            
             participant_units = get_participant_units(player)
 
             # Add traits to dataframe
@@ -120,7 +166,6 @@ def data_from_summoner_name(name: str, count: int = None) -> pd.DataFrame:
                 if "unit" in name.split("_") and len(name.split("_")) == 2
             ]
             tier_units = [name for name in columns if "tier" in name.split("_")]
-
             for index, (name, tier) in enumerate(participant_units["units"].items()):
                 aux_df.loc[0, name_units[index]] = name
                 aux_df.loc[0, tier_units[index]] = tier
