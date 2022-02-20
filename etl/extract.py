@@ -166,6 +166,8 @@ def data_from_summoner_name(name: str, count: int = None) -> pd.DataFrame:
                 if "unit" in name.split("_") and len(name.split("_")) == 2
             ]
             tier_units = [name for name in columns if "tier" in name.split("_")]
+            
+            
             for index, (name, tier) in enumerate(participant_units["units"].items()):
                 aux_df.loc[0, name_units[index]] = name
                 aux_df.loc[0, tier_units[index]] = tier

@@ -16,5 +16,5 @@ NAME_TRAITS = [
     "Twinshot",
 ]
 
-NAME_UNITS = [f"unit_{i}" for i in range(10)]
-TIER_UNITS = [f"tier_unit_{i}" for i in range(10)]
+NAME_UNITS = [f"unit_{i}" for i in range(11)]
+TIER_UNITS = [f"tier_unit_{i}" for i in range(11)]
