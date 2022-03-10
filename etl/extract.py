@@ -126,6 +126,9 @@ def get_participant_units(participant: Dict[Any, Any]) -> Dict[Any, Any]:
 
     return participant_units
 
+def puuid_from_name(name: str) -> str:
+    watcher = TFTScraper(api_key=API_KEY)
+    return watcher.get_puuid(name)
 
 def data_from_summoner_name(name: str, count: int = None) -> pd.DataFrame:
     watcher = TFTScraper(api_key=API_KEY)
